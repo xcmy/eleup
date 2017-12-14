@@ -10,7 +10,7 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
-let mainWindow
+let mainWindow,logoutWindow
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
@@ -32,7 +32,19 @@ function createWindow () {
         label: '检查更新',
         accelerator: '',
         click: function () {
-          autoUpdater.quitAndInstall()
+            logoutWindow = new BrowserWindow({
+                parent: mainWindow,
+                height:270,
+                width:350,
+                resizable:false,
+                fullscreenable:false,
+                center:true,
+                movable:false,
+                minimizable:false,
+                maximizable:false,
+                titleBarStyle:"hidden"
+            });
+            logoutWindow.loadURL(`http://localhost:9080/#/version`);
         }
       }]
   }]
