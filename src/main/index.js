@@ -68,5 +68,6 @@ app.on('activate', () => {
 //
 
 autoUpdater.on('update-downloaded', () => {
+  console.log('检测到更新')
   autoUpdater.quitAndInstall()
 })
