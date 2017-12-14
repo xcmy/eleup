@@ -4,7 +4,7 @@
     <main>
       <div class="left-side">
         <span class="title">
-          Electron-vue project update test!
+          Electron-vue project update test success!
         </span>
         <system-information></system-information>
       </div>

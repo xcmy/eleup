@@ -1,6 +1,6 @@
 'use strict'
-
-import { app, BrowserWindow } from 'electron'
+import { autoUpdater } from 'electron-updater'
+import {app, BrowserWindow, Menu} from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -24,15 +24,27 @@ function createWindow () {
     useContentSize: true,
     width: 1000
   })
-
   mainWindow.loadURL(winURL)
-
+  const template = [ {
+    label: 'eleup',
+    submenu: [
+      {
+        label: '检查更新',
+        accelerator: '',
+        click: function () {
+          autoUpdater.quitAndInstall()
+        }
+      }]
+  }]
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
 }
 
-// app.on('ready', createWindow)
+app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -54,13 +66,7 @@ app.on('activate', () => {
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
  */
 //
-import { autoUpdater } from 'electron-updater'
 
 autoUpdater.on('update-downloaded', () => {
   autoUpdater.quitAndInstall()
-})
-
-app.on('ready', () => {
-  createWindow
-  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
 })
